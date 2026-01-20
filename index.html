@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Padhai ka Safar - National Student Portal</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { sans: ['Inter', 'sans-serif'] },
+            colors: {
+              gov: {
+                blue: '#003366',
+                light: '#f1f5f9',
+                accent: '#eab308'
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "vite": "https://esm.sh/vite@^7.3.1",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2"
+  }
+}
+</script>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased flex flex-col min-h-screen">
+
+    <!-- HEADER -->
+    <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3 cursor-pointer" onclick="app.router('LANDING')">
+                    <div class="bg-gov-blue text-white p-2 rounded-lg">
+                        <i data-lucide="book-open" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gov-blue tracking-tight">PADHAI KA SAFAR</h1>
+                        <p class="text-xs text-gray-500 font-medium">Government of India Initiative</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4" id="header-user-section">
+                    <!-- Injected by JS -->
+                    <div class="flex items-center gap-2 text-sm text-gray-500">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-gov-blue"></i>
+                        <span>Secure Identity Protocol</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-grow">
+        
+        <!-- VIEW: LANDING -->
+        <div id="view-landing" class="fade-in">
+            <div class="relative isolate px-6 pt-14 lg:px-8">
+                <div class="mx-auto max-w-2xl py-32 text-center">
+                    <div class="hidden sm:mb-8 sm:flex sm:justify-center">
+                        <div class="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+                            Government of India Student Initiative
+                        </div>
+                    </div>
+                    <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl text-gov-blue">
+                        Padhai ka Safar
+                    </h1>
+                    <p class="mt-6 text-lg leading-8 text-gray-600">
+                        Your secure, guided academic companion. Discover scholarships, track your journey, and find free courses using just your Aadhaar for identity.
+                    </p>
+                    <div class="mt-10 flex items-center justify-center gap-x-6">
+                        <button onclick="app.router('VERIFY')" class="rounded-md bg-gov-blue px-6 py-3.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-800 transition-transform active:scale-95">
+                            Student Login (via Aadhaar)
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 pb-20 text-center">
+                    <div class="p-6 bg-white rounded-lg shadow-sm border border-gray-100">
+                        <h3 class="font-bold text-gray-900 mb-2">Privacy First</h3>
+                        <p class="text-sm text-gray-600">We verify you via UIDAI OTP. We do NOT store your Aadhaar number.</p>
+                    </div>
+                    <div class="p-6 bg-white rounded-lg shadow-sm border border-gray-100">
+                        <h3 class="font-bold text-gray-900 mb-2">Automatic Matching</h3>
+                        <p class="text-sm text-gray-600">Our rule engine automatically finds scholarships you are eligible for.</p>
+                    </div>
+                    <div class="p-6 bg-white rounded-lg shadow-sm border border-gray-100">
+                        <h3 class="font-bold text-gray-900 mb-2">Skill India Integrated</h3>
+                        <p class="text-sm text-gray-600">Get recommended for free government courses to boost employability.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW: VERIFY -->
+        <div id="view-verify" class="hidden fade-in">
+            <div class="max-w-md mx-auto bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 mt-10">
+                <div class="bg-gov-blue p-6 text-center">
+                    <i data-lucide="shield" class="w-12 h-12 text-white mx-auto mb-3"></i>
+                    <h2 class="text-xl font-bold text-white">Identity Verification</h2>
+                    <p class="text-blue-100 text-sm mt-1">Secure via UIDAI (Mock)</p>
+                </div>
+
+                <div class="p-8">
+                    <!-- Step 1: Aadhaar Input -->
+                    <form id="form-aadhaar" onsubmit="app.handleSendOtp(event)">
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Enter Aadhaar Number</label>
+                            <div class="relative">
+                                <input type="text" id="input-aadhaar" maxlength="12" class="w-full pl-4 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="XXXX XXXX XXXX" required>
+                                <i data-lucide="lock" class="absolute right-3 top-3 text-gray-400 w-5 h-5"></i>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-2 flex items-center gap-1">
+                                <i data-lucide="shield-check" class="w-3 h-3"></i> Not stored. Used for OTP only.
+                            </p>
+                        </div>
+                        <button type="submit" id="btn-send-otp" class="w-full bg-gov-blue hover:bg-blue-800 text-white font-medium py-3 rounded-lg flex justify-center items-center gap-2">
+                            Send OTP <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </form>
+
+                    <!-- Step 2: OTP Input -->
+                    <form id="form-otp" class="hidden space-y-6" onsubmit="app.handleVerifyOtp(event)">
+                        <div class="text-center">
+                            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-50 mb-4">
+                                <i data-lucide="smartphone" class="w-6 h-6 text-gov-blue"></i>
+                            </div>
+                            <h3 class="text-lg font-medium text-gray-900">Enter OTP</h3>
+                            <p class="text-sm text-gray-500 mt-1">Sent to registered mobile</p>
+                        </div>
+                        <div>
+                            <input type="text" id="input-otp" maxlength="6" class="w-full text-center text-2xl tracking-widest py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="000000">
+                            <p class="text-xs text-center text-gray-400 mt-2">Use demo OTP: 123456</p>
+                        </div>
+                        <button type="submit" id="btn-verify-otp" class="w-full bg-gov-blue hover:bg-blue-800 text-white font-medium py-3 rounded-lg">
+                            Verify Identity
+                        </button>
+                        <button type="button" onclick="app.resetVerification()" class="w-full text-sm text-gray-600 hover:text-gray-900">Go Back</button>
+                    </form>
+
+                    <!-- Feedback Area -->
+                    <div id="verify-feedback" class="mt-4 text-center text-sm"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW: PROFILE SETUP -->
+        <div id="view-profile" class="hidden fade-in">
+            <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-sm border border-gray-200 mt-8">
+                <div class="p-6 border-b border-gray-100">
+                    <h2 class="text-xl font-bold text-gray-800">Complete Your Academic Profile</h2>
+                    <p class="text-sm text-gray-500">This information helps us match scholarships and courses.</p>
+                </div>
+                <form onsubmit="app.handleProfileSubmit(event)" class="p-6 space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                            <input type="text" id="profile-name" disabled class="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-lg text-gray-500 cursor-not-allowed">
+                            <p class="text-xs text-green-600 mt-1">✓ Verified from Aadhaar</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">State of Domicile</label>
+                            <select id="profile-state" class="w-full p-2.5 border border-gray-300 rounded-lg bg-white">
+                                <option>Delhi</option>
+                                <option>Maharashtra</option>
+                                <option>Uttar Pradesh</option>
+                                <option>Karnataka</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">District</label>
+                            <input type="text" id="profile-district" required placeholder="Enter District" class="w-full p-2.5 border border-gray-300 rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Current Education Level</label>
+                            <select id="profile-edu" class="w-full p-2.5 border border-gray-300 rounded-lg bg-white">
+                                <option value="Class 10">Class 10</option>
+                                <option value="Class 12">Class 12</option>
+                                <option value="Diploma">Diploma</option>
+                                <option value="Undergraduate">Undergraduate</option>
+                                <option value="Postgraduate">Postgraduate</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Family Annual Income</label>
+                            <select id="profile-income" class="w-full p-2.5 border border-gray-300 rounded-lg bg-white">
+                                <option value="Below 1 Lakh">Below 1 Lakh</option>
+                                <option value="1 Lakh - 2.5 Lakhs">1 Lakh - 2.5 Lakhs</option>
+                                <option value="2.5 Lakhs - 8 Lakhs">2.5 Lakhs - 8 Lakhs</option>
+                                <option value="Above 8 Lakhs">Above 8 Lakhs</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="pt-4 flex justify-end">
+                        <button type="submit" class="bg-gov-blue hover:bg-blue-800 text-white px-8 py-3 rounded-lg font-medium">
+                            Create Profile & Go to Dashboard
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- VIEW: DASHBOARD -->
+        <div id="view-dashboard" class="hidden fade-in">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+                
+                <!-- Welcome Banner -->
+                <div class="bg-gradient-to-r from-gov-blue to-blue-900 rounded-2xl p-8 text-white shadow-lg">
+                    <h1 class="text-3xl font-bold mb-2" id="dash-welcome">Welcome back</h1>
+                    <p class="opacity-90" id="dash-subtitle">Loading profile...</p>
+                    <div class="mt-6 flex flex-wrap gap-3">
+                        <span class="bg-white/20 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 backdrop-blur-sm">
+                            <i data-lucide="award" class="w-4 h-4 text-gov-accent"></i>
+                            <span id="dash-scholarship-count">0</span> Scholarships Found
+                        </span>
+                        <span class="bg-white/20 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 backdrop-blur-sm">
+                            <i data-lucide="graduation-cap" class="w-4 h-4 text-gov-accent"></i>
+                            <span id="dash-course-count">0</span> Recommended Courses
+                        </span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Left Column -->
+                    <div class="lg:col-span-1 space-y-6">
+                        <!-- Journey Tracker -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                                <i data-lucide="briefcase" class="w-5 h-5 text-gov-blue"></i>
+                                Academic Journey
+                            </h3>
+                            <div class="relative border-l-2 border-blue-100 ml-3 space-y-8 py-2">
+                                <div class="ml-6 relative">
+                                    <span class="absolute -left-[31px] bg-green-500 h-4 w-4 rounded-full border-2 border-white"></span>
+                                    <p class="text-sm text-gray-500">Completed</p>
+                                    <h4 class="font-semibold text-gray-800">Previous Education</h4>
+                                </div>
+                                <div class="ml-6 relative">
+                                    <span class="absolute -left-[31px] bg-gov-blue h-4 w-4 rounded-full border-2 border-white ring-4 ring-blue-50"></span>
+                                    <p class="text-sm text-gov-blue font-semibold">Current Stage</p>
+                                    <h4 class="font-bold text-gray-900 text-lg" id="dash-current-stage">--</h4>
+                                </div>
+                                <div class="ml-6 relative">
+                                    <span class="absolute -left-[31px] bg-gray-200 h-4 w-4 rounded-full border-2 border-white"></span>
+                                    <p class="text-sm text-gray-500">Recommended Next Steps</p>
+                                    <ul class="mt-2 space-y-2" id="dash-next-steps">
+                                        <!-- Injected by JS -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Alerts -->
+                        <div class="bg-orange-50 rounded-xl border border-orange-100 p-6">
+                            <h3 class="text-orange-800 font-bold mb-2 flex items-center gap-2">
+                                <i data-lucide="bell" class="w-4 h-4"></i> Alerts
+                            </h3>
+                            <ul class="text-sm text-orange-700 space-y-2">
+                                <li>• Apply for NSP Scholarship before Oct 31.</li>
+                                <li>• Skill India registration opens next week.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="lg:col-span-2 space-y-8">
+                        <!-- Scholarships -->
+                        <section>
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-xl font-bold text-gray-800">Eligible Scholarships</h2>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="scholarships-list">
+                                <!-- Injected by JS -->
+                            </div>
+                        </section>
+
+                        <!-- Courses -->
+                        <section>
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-xl font-bold text-gray-800">Free Government Courses</h2>
+                            </div>
+                            <div class="space-y-4" id="courses-list">
+                                <!-- Injected by JS -->
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 gap-4">
+            <p>© 2024 Padhai ka Safar. Government of India.</p>
+            <div class="flex gap-4">
+                <a href="#" class="hover:text-gray-900">Privacy Policy</a>
+                <a href="#" class="hover:text-gray-900">Terms of Use</a>
+                <a href="#" class="hover:text-gray-900">Support</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Main Logic Script -->
+    <script src="script.js"></script>
+</body>
+</html>

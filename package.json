@@ -1,0 +1,9 @@
+{
+  "name": "padhai-ka-safar",
+  "version": "1.0.0",
+  "description": "National Student Portal Prototype",
+  "scripts": {
+    "start": "python app.py",
+    "deploy": "gh-pages -d ."
+  }
+}

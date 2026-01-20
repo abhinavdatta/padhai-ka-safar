@@ -1,0 +1,5 @@
+{
+  "name": "Padhai ka Safar",
+  "description": "A privacy-first, UIDAI-compliant student academic journey platform using Aadhaar for verification only.",
+  "requestFramePermissions": []
+}
